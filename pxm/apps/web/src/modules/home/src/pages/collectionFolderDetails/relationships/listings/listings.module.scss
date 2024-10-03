@@ -1,0 +1,9 @@
+.listingContainer {
+  width: calc(100% - 300px);
+}
+
+.deleteButton {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

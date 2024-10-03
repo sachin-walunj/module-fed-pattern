@@ -1,0 +1,92 @@
+.sideDrawerPadding {
+  padding: 16px;
+}
+
+.collectionLoading {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.createContainer {
+  margin: 16px 0px;
+}
+
+.createInfoContainer {
+  li {
+    color: inherit;
+  }
+}
+
+.createFormContainer {
+  margin: 16px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .sortContainer {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+}
+
+.collectionSelectContainer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--medium-purple);
+  border-radius: 4px;
+  & > * {
+    border-top: 1px solid var(--medium-purple);
+  }
+}
+
+.collectionItemSelectContainer {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: space-between;
+  align-items: center;
+
+  .leftContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.parentFolderSelectContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--medium-purple);
+  background-color: var(--lighter-gray);
+  padding: 6px 16px; // for some reason the 6px matches the file uploader from the library
+  border-radius: 4px;
+
+  .parentFolderSelectLabel {
+    font-size: 14px;
+  }
+}
+
+.parentFolderTableButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.emptyState {
+  @extend .sideDrawerPadding;
+
+  text-align: center;
+}
+
+.sideDrawerFooter {
+  display: flex;
+  justify-content: flex-end;
+}

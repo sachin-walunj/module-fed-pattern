@@ -1,0 +1,161 @@
+{
+  "root": true,
+  "extends": ["plugin:import/typescript"],
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nx", "import"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                "sourceTag": "scope: web",
+                "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                "sourceTag": "scope: home",
+                "onlyDependOnLibsWithTags": [
+                  "scope: home",
+                  "scope: web-shared",
+                  "scope: static-shared",
+                  "scope: store"
+                ]
+              },
+              {
+                "sourceTag": "scope: syndication",
+                "onlyDependOnLibsWithTags": [
+                  "scope: syndication",
+                  "scope: web-shared",
+                  "scope: static-shared",
+                  "scope: store"
+                ]
+              },
+              {
+                "sourceTag": "scope: settings",
+                "onlyDependOnLibsWithTags": [
+                  "scope: settings",
+                  "scope: web-shared",
+                  "scope: static-shared",
+                  "scope: store"
+                ]
+              },
+              {
+                "sourceTag": "scope: static-shared",
+                "onlyDependOnLibsWithTags": [
+                  "scope: static-shared",
+                  "scope: store"
+                ]
+              },
+              {
+                "sourceTag": "scope: shared",
+                "onlyDependOnLibsWithTags": ["scope: shared", "scope: store"]
+              },
+              {
+                "sourceTag": "scope: store",
+                "onlyDependOnLibsWithTags": ["scope: store"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "rules": {}
+    }
+  ],
+  "rules": {
+    "sort-imports": [
+      2,
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          ["parent", "sibling", "index"],
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@storybook/**",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "react**", "group": "external", "position": "before" },
+          { "pattern": "next**", "group": "external", "position": "before" },
+          {
+            "pattern": "@patterninc/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@amplifi**/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "**/actions",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "**/types/**",
+            "group": "type",
+            "position": "before"
+          },
+          {
+            "pattern": "./*.scss",
+            "group": "sibling",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["@patterninc/**"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": { "typescript": true, "node": true }
+  }
+}

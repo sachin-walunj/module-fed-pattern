@@ -1,0 +1,59 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@amplifi-workspace/home": ["apps/web/src/modules/home/src/index.ts"],
+      "@amplifi-workspace/home/server": [
+        "apps/web/src/modules/home/src/server.ts"
+      ],
+      "@amplifi-workspace/match": ["apps/web/src/modules/match/src/index.ts"],
+      "@amplifi-workspace/match/server": [
+        "apps/web/src/modules/match/src/server.ts"
+      ],
+      "@amplifi-workspace/optimize": [
+        "apps/web/src/modules/optimize/src/index.ts"
+      ],
+      "@amplifi-workspace/optimize/server": [
+        "apps/web/src/modules/optimize/src/server.ts"
+      ],
+      "@amplifi-workspace/settings": [
+        "apps/web/src/modules/settings/src/index.ts"
+      ],
+      "@amplifi-workspace/shared": ["modules/shared/src/index.ts"],
+      "@amplifi-workspace/shared/server": ["modules/shared/src/server.ts"],
+      "@amplifi-workspace/static-shared": [
+        "apps/web/src/modules/static-shared/src/index.ts"
+      ],
+      "@amplifi-workspace/store": ["apps/web/src/modules/store/src/index.ts"],
+      "@amplifi-workspace/store/server": [
+        "apps/web/src/modules/store/src/server.ts"
+      ],
+      "@amplifi-workspace/syndication": [
+        "apps/web/src/modules/syndicate/src/index.ts"
+      ],
+      "@amplifi-workspace/syndication/server": [
+        "apps/web/src/modules/syndicate/src/server.ts"
+      ],
+      "@amplifi-workspace/web-shared": [
+        "apps/web/src/modules/shared/src/index.ts"
+      ],
+      "@amplifi-workspace/web-shared/server": [
+        "apps/web/src/modules/shared/src/server.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

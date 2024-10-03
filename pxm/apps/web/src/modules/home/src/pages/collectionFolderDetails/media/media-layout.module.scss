@@ -1,0 +1,38 @@
+.logo {
+  width: 150px;
+  height: 20px;
+}
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+/* AccordionComponent.module.css */
+.flex-container {
+  display: flex;
+}
+
+.flex-item-label {
+  flex: 1;
+}
+
+.flex-item-content {
+  flex: 2;
+}
+
+.truncated-button {
+  flex: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  margin-left: 15px;
+  max-width: 100%;
+  color: #009af0;
+  background: none; /* Removes button background */
+  border: none; /* Removes button border */
+  padding: 0; /* Removes default padding */
+  cursor: pointer; /* Changes cursor to pointer */
+  text-decoration: underline; /* Adds underline to text */
+}

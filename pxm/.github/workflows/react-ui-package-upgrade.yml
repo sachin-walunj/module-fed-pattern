@@ -1,0 +1,91 @@
+name: 'Amplifi-Workspace: React UI Upgrade Workflow'
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  react-ui-upgrade:
+    name: 'react-ui upgrade'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read .pnpmversion file
+        id: read_pnpm_version
+        run: echo "PNPM_VERSION=$(cat .pnpmversion)" >> $GITHUB_ENV
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Get latest published react-ui version
+        run: pnpm get-types
+
+      - name: Check for uncommitted changes
+        id: changed-files
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD)
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "any_changed=true" >> $GITHUB_ENV
+          else
+            echo "any_changed=false" >> $GITHUB_ENV
+          fi
+          echo $CHANGED_FILES
+
+      - name: Create pull request
+        if: env.any_changed == 'true'
+        id: pr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: 'Create pull request for react-ui version bump'
+          title: 'Create pull request for react-ui version bump'
+          body: |
+            This pull request includes the react-ui version bump changed files:
+          delete-branch: true
+          branch: react-ui-version-bump
+          labels: auto-generated,dependencies
+          token: ${{ secrets.GHA_RUNNER_TOKEN }}
+
+      - uses: peter-evans/enable-pull-request-automerge@v2
+        if: env.any_changed == 'true'
+        with:
+          token: ${{ secrets.GHA_RUNNER_TOKEN }}
+          pull-request-number: ${{ steps.pr.outputs.pull-request-number }}
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: env.any_changed == 'true'
+        env:
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          SLACK_COLOR: '#46deba'
+          SLACK_MESSAGE: '*Amplifi-Workspace:* A <${{ steps.pr.outputs.pull-request-url }}/files|PR> for a react-ui version bump has been created.'
+          SLACK_TITLE: Auto Version Upgrade
+          SLACK_USERNAME: Github Action
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_PR_CHANNEL_URL }}
+          SLACK_FOOTER: Github Action
+          MSG_MINIMAL: event
+          SLACK_LINK_NAMES: true

@@ -1,0 +1,14 @@
+.outerContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 16px;
+}
+.toggleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.userRoles {
+  margin-left: 16px;
+}

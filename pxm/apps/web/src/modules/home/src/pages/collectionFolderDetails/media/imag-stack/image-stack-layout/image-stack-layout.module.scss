@@ -1,0 +1,16 @@
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footerRightSection {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}

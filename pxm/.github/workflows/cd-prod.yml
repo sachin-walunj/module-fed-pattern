@@ -1,0 +1,32 @@
+name: Prod amp-api-pdf Deployment
+on:
+  push:
+    branches: [prod-setup]
+    #paths-ignore: ['.github/workflows/**']
+  workflow_dispatch:
+
+jobs:
+  ### ============================= STAGE-build-upload-docker-image ============================= ###
+  prod-build:
+    uses: ampmedia/amp-reusable-workflow/.github/workflows/docker-build-and-push.yml@v1.2.1
+    with:
+      ecr-repo-name: prod-amp-ws
+      build-args: |
+        NODE_ENV=main
+    secrets:
+      AWS_ACCESS_KEY_FROM_GITHUB_SECRETS: ${{ secrets.AWS_AMPLIFIPROD_ACCESS_KEY }}
+      AWS_SECRET_KEY_FROM_GITHUB_SECRETS: ${{ secrets.AWS_AMPLIFIPROD_SECRET_KEY }}
+      NPM_TOKEN: ${{ secrets.GHA_RUNNER_TOKEN }}
+      SHEETJS_TOKEN: ${{ secrets.SHEETJS_TOKEN }}
+
+  prod-deployment:
+    needs: [prod-build]
+    uses: ampmedia/amp-reusable-workflow/.github/workflows/ecs-deployment.yml@v1.2.1
+    with:
+      environment: production
+      service-name: prod-amp-ws-api
+      image-uri: ${{ needs.prod-build.outputs.image-uri }}
+      is-green-blue-deployment: false
+    secrets:
+      AWS_ACCESS_KEY_FROM_GITHUB_SECRETS: ${{ secrets.AWS_AMPLIFIPROD_ACCESS_KEY }}
+      AWS_SECRET_KEY_FROM_GITHUB_SECRETS: ${{ secrets.AWS_AMPLIFIPROD_SECRET_KEY }}

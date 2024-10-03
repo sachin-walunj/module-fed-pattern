@@ -1,0 +1,105 @@
+name: Staging - Deploy Application to Amazon ECS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_AMPLIFIDEV_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_AMPLIFIDEV_SECRET_KEY }}
+  AWS_DEFAULT_REGION: us-west-2
+  AWS_REGION: us-west-2
+  ECR_REPOSITORY: stage-amp-ws
+  IMAGE_TAG: ${{ github.sha }}
+  GIT_REPO_BRANCH: 'main'
+concurrency: stage_deployment
+jobs:
+  # Build docker image
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    outputs:
+      image-id: ${{ steps.build-image.outputs.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }},${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          build-args: |
+            NPM_TOKEN=${{ secrets.GHA_RUNNER_TOKEN }}
+            NODE_ENV=${{ secrets.GIT_REPO_BRANCH }}
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: API:- Output image tag
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY}}
+          IMAGE_TAG: ${{ github.sha }}
+
+        run: |
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+  # Deploy front end service
+  deploy-front:
+    runs-on: ubuntu-latest
+    name: deploy-amp-ws-api
+    environment: dev
+    needs: [build]
+
+    steps:
+      # Front end application deployment
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: API:- Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition stage-amp-ws-api-def --query taskDefinition > task-definition.json
+
+      # Update front end task defination as per the latest image tag
+      - name: API:- Fill in the new image ID in the Amazon ECS task definition
+        id: task-def-api
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: stage-amp-ws-api
+          image: ${{ needs.build.outputs['image-id'] }}
+          environment-variables: |
+            APP_VERSION=${{ github.sha }}
+            DD_TAGS=git.commit.sha:${{ github.sha }},git.repository_url:github.com/ampmedia/amplifi-workspace.git
+
+      # Deploy front end appliction against blue-green deployment
+      - name: API:- Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-api.outputs.task-definition }}
+          service: stage-amp-ws-api
+          cluster: stage-amp-ws-api
+          wait-for-service-stability: true

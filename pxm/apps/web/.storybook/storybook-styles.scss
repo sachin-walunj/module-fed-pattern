@@ -1,0 +1,58 @@
+// Storybook style overrides
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Wix+Madefor+Display:wght@400..800&display=swap');
+
+// NOTE: !important is required to override the inline styles that Storybook applies to the preview iframe
+body {
+  color: var(--black);
+  overflow: auto !important;
+}
+
+#storybook-docs .storybook-docs-top-section {
+  p,
+  div,
+  li,
+  span {
+    font-family: 'Wix Madefor Display', sans-serif !important;
+    font-size: var(--font-size-14) !important;
+    line-height: 22px !important;
+  }
+  code {
+    font-size: var(--font-size-14) !important;
+    background: var(--light-lavender);
+    padding: 2px 4px;
+    line-height: 1;
+    margin: 0 2px;
+    border-radius: 4px;
+    color: var(--black);
+    &:not(.language-javascript) {
+      border: 1px solid var(--medium-purple);
+      white-space: nowrap;
+    }
+  }
+  h1.sbdocs-title {
+    margin-bottom: 0;
+  }
+}
+
+.css-qa4clq
+  :where(pre:not(.sb-anchor, .sb-unstyled, .sb-unstyled pre)):not(.prismjs) {
+  background: var(--black) !important;
+  padding: 16px !important;
+  border-radius: 4px !important;
+  font-family: 'Wix Madefor Display', sans-serif !important;
+  code {
+    color: var(--white) !important;
+    background: none !important;
+  }
+}
+
+.sb-show-main.sb-main-centered div#storybook-root {
+  @media only screen and (max-width: 767px) {
+    padding: 0;
+  }
+}
+
+.css-qa4clq :where(span:not(.sb-anchor, .sb-unstyled, .sb-unstyled span)) {
+  font-family: 'Wix Madefor Display', sans-serif !important;
+  font-size: var(--font-size-12) !important;
+}

@@ -1,0 +1,17 @@
+{
+  "Resources": [
+    {
+      "TargetService": {
+        "Properties": {
+          "LoadBalancerInfo": {
+            "ContainerName": "stage-amp-ws-api",
+            "ContainerPort": 8080
+          },
+          "TaskDefinition": "arn:aws:ecs:us-west-2:669815193507:task-definition/stage-amp-ws-api-def:3"
+        },
+        "Type": "AWS::ECS::SERVICE"
+      }
+    }
+  ],
+  "version": 1
+}

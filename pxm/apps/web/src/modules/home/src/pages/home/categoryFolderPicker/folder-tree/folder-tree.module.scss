@@ -1,0 +1,90 @@
+.folderItemContainer {
+  display: flex;
+  flex-direction: column;
+
+  .folderItemRow {
+    padding: 8px 8px 8px 0;
+    display: flex;
+    gap: 16px;
+    width: 100%;
+
+    //Gets rid of default border for the spinner
+    & > * {
+      border-style: none;
+    }
+  }
+
+  .folderChildrenContainer {
+    background-color: var(--lighter-gray);
+    overflow: hidden;
+  }
+
+  .folderItemRowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 16px;
+    font-size: 14px;
+    word-break: break-word;
+
+    .folderItemOptions {
+      display: none;
+      background-color: transparent;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      padding: 4px;
+    }
+
+    .folderItemOptions:hover {
+      cursor: pointer;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--light-blue);
+
+      .folderItemOptions,
+      .folderItemOptionsHover {
+        display: block;
+      }
+    }
+
+    &.folderItemSelected {
+      background-color: var(--light-blue);
+      font-weight: var(--font-weight-bold);
+    }
+
+    &.folderItemHighlight {
+      background-color: var(--light-orange);
+    }
+
+    .highlight {
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  &[data-toggled='true'] {
+    .folderChildrenContainer {
+      max-height: none;
+    }
+  }
+
+  &[data-toggled='false'] {
+    .folderChildrenContainer {
+      max-height: 0px;
+    }
+  }
+}
+
+.folderTreeContainer {
+  overflow: auto;
+}
+
+.accordionTransition {
+  transition: max-height 200ms ease-in-out;
+}
+.accordionTransition[data-toggled='true'] {
+  max-height: 200px;
+}

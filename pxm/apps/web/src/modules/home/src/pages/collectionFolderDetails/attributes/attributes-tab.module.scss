@@ -1,0 +1,24 @@
+.logo {
+  width: 150px;
+  height: 20px;
+}
+.attributesContainer {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 200px 1fr;
+  align-items: start;
+}
+.mobileAttributesContainer {
+  overflow: auto;
+}
+.TableContainer {
+  border: 1px solid var(--light-gray);
+  padding: 16px;
+  overflow: auto;
+  height: 550px;
+}
+
+.actionCell {
+  display: flex;
+  justify-content: flex-end;
+}

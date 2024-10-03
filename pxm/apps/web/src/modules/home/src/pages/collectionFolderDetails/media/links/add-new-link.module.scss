@@ -1,0 +1,31 @@
+.resourceLinkCardImageWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden; /* Ensure the image doesn't overflow */
+}
+
+.resourceLinkCardImage {
+  height: 300px;
+  object-fit: contain;
+  width: 100%; /* Ensure the image adjusts to container width */
+  max-width: 100%; /* Prevent the image from exceeding the container */
+}
+
+.resourceLinkCardContent {
+  text-align: center;
+}
+
+.resourceLinkCardLink {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.resourceLinkCardLink:hover {
+  text-decoration: underline;
+}
+
+.description {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

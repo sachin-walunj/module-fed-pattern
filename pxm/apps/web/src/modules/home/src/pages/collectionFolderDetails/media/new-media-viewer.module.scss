@@ -1,0 +1,22 @@
+.container {
+  padding: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mediaViewerWrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.scrollableInfoSection {
+  max-height: 80vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}

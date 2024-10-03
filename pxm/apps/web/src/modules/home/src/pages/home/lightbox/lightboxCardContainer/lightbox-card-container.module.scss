@@ -1,0 +1,25 @@
+.cardContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: var(--lighter-gray);
+}
+
+.selectContainer {
+  flex: 1;
+  margin-right: 16px;
+  background-color: white;
+}
+
+.newLightboxButton {
+  margin-left: 6px;
+}
+
+.productCardContainer {
+  max-height: 675px; //this is added to adjust the height of container to be scrollable
+  overflow-y: scroll;
+}

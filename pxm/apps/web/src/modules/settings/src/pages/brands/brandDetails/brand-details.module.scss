@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  width: 100%;
+  gap: 24px;
+
+  .layout {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 24px;
+  }
+}

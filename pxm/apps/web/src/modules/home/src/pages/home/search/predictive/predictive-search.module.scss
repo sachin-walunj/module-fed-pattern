@@ -1,0 +1,10 @@
+.predictiveSearchSection {
+  overflow: hidden;
+
+  .sectionContainer {
+    &:hover {
+      cursor: pointer;
+      background-color: var(--light-blue);
+    }
+  }
+}

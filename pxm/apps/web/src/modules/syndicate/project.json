@@ -1,0 +1,9 @@
+{
+  "name": "syndication",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web/src/modules/syndicate/src",
+  "projectType": "library",
+  "tags": ["scope: syndication"],
+  "// targets": "to see all targets run: nx show project syndication --web",
+  "targets": {}
+}

@@ -1,0 +1,53 @@
+.card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  height: 60px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.draggableContainer {
+  display: flex;
+  justify-content: center;
+  width: 60px;
+  height: 100%;
+  border-right: 1px solid #ccc;
+}
+
+.mediaContainer {
+  display: flex;
+  justify-content: center;
+  width: 60px;
+}
+
+.media {
+  width: 30px;
+  height: 30px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 0 16px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 15px;
+  align-items: center;
+}
+.subTitle {
+  font-size: 12px;
+  font-weight: lighter;
+  color: grey;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

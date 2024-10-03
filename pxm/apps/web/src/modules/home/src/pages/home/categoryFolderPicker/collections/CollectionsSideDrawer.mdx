@@ -1,0 +1,65 @@
+import { Canvas, Meta } from '@storybook/blocks'
+
+<Meta title='Components/CollectionsSideDrawer' />
+
+# Collections Side Drawer
+
+The `CollectionsSideDrawer` is the root component that houses the category and topics folder view component.
+
+It consists of the generic `CollectionTreeView` component that is reused in `CollectionsSideDrawer` and `CollectionParentSelectSideDrawer` components.
+
+In order to use the `CollectionTreeView` component, you need to give it an `onItemClick` prop that will be called when a folder is clicked.
+
+## useCollectionItems - BrowseTreeItem
+
+The BrowseTreeItem is the collection type returned from the backend that is similar in structure to the base `Collection` type
+
+All of the folder data is cached as `BrowseTreeItem` objects using the from the `useCollectionItems` hook, which exposes a few methods:
+
+- `addItems`: Merges in new items into the cache based on the item's parent id.
+  If the item's parent is not currently in the cache, it will not be added, but instead returned as `notMergedItems`
+- `deleteItem`: Removes an item from the cache based on the item's id
+- `moveItems`: Moves an item from one parent to another
+- `fetchItem`: Fetches an item's children from the server and updates the cache. This is used when a folder is expanded for the first time.
+- `collectionItems`: The cached collection items
+
+This hook uses the `CollectionsProvider` context in order to be able to access the cached collection items wherever in the app.
+
+## useCollectionTreeItem - CollectionTreeItem
+
+The `CollectionTreeItem` type is just `BrowseTreeItem` transformed in a way that can be used by the `FolderTree` component.
+
+In order to make this transformation, the `useCollectionTreeItem` hook is used, which returns the transformed `CollectionTreeItem` objects.
+
+## Folder Tree
+
+The `FolderTree` component is a recursive tree view that displays the folder structure of the `FolderTreeDataItem` items.
+
+This component was created in a way with no dependencies on the `CollectionTreeView` component, so it can be reused in other places possibly in the future.
+
+Some of the key features of the `FolderTree` component are:
+
+- Virtualization: The tree is virtualized to only render the visible items on the screen
+- Selection: The selected item is highlighted
+- Search Highlighting: By passing in a `highlightLabel` property to the `FolderTreeDataItem` object, the search term will be highlighted in the label
+- Toggling open and close: This is currently handled under the hood, but you can override the default behavior by passing in a `isOpen` property to the `FolderTreeDataItem` object
+
+## Collection Tree Item Search
+
+The `SearchFilter` hook is used to filter the collection items based on the search term.
+
+You pass in the items that need to be filtered, and it returns the filtered items with the search state to be used in a search component
+
+The way the search filtering works is by filtering the currently cached collection items. It prunes the tree, keeping only items with a label that matches the search. Then it finds the common ancestor of this new tree to show a condensed view in the search result.
+
+If the user searches for something that is not in the cache, it will fetch the item from the server and update the cache with the new item. Any item that is returned in this backend search result that does not have a parent in the cache (cannot be merged in) is just set at the top level.
+
+This search functionality is heavily dependent on `CollectionTreeItem` currently, but could be refactored into `FolderTree` with the removed dependencies if the functionality is needed elsewhere.
+
+## Datalayer
+
+- `fetchCollectionItems`: Fetches the children of a given parent item
+- `fetchTopicItems`: Fetches topics based on a search criteria
+- `createNewCategoryOrTopic`: Creates a new category or topic based on the type of the object. Merging this new item into the cache is handled by the `useCollectionItems` hook.
+- `deleteCategoryOrTopic`: Deletes a category or topic from the server. Removing the item from the cache is handled by the `useCollectionItems` hook.
+- `assignToCategoryOrTopic`: Moves a topic or category to a new parent. Moving this item in the cache is handled by the `useCollectionItems` hook.

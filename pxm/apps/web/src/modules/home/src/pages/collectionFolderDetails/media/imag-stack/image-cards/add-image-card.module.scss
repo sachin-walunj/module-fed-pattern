@@ -1,0 +1,38 @@
+.card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  height: 60px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.mediaContainer {
+  display: flex;
+  justify-content: center;
+  width: 60px;
+}
+
+.media {
+  width: 30px;
+  height: 30px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 15px;
+  align-items: center;
+}
+
+.subTitle {
+  font-size: 12px;
+  font-weight: lighter;
+  color: grey;
+}

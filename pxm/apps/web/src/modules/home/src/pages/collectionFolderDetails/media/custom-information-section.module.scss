@@ -1,0 +1,20 @@
+.infoRow {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.infoLabel {
+  flex: 1;
+  font-size: 14px;
+}
+
+.infoValue {
+  flex: 4;
+  font-size: 14px;
+}
+
+.scrollableInfoSection {
+  max-height: 50vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
